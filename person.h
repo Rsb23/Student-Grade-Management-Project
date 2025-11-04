@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include <sqlite.h>
+#include <include/sqlite3.h>
 
 class Person
 {
