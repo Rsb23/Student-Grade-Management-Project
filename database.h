@@ -1,17 +1,21 @@
 #include "include/sqlite3.h"
+#include <iostream>
+#include <string>
 
-// TODO: refactor based on database.cpp
-
-class DatabaseConnection{
+class DatabaseConnection
+{
 private:
-    static DatabaseConnection * instance;
+    static DatabaseConnection *instance;
+    std::string dbFilename{""};
+    sqlite3 *db;
+    DatabaseConnection(std::string dbFilename);
 
 public:
-    DatabaseConnection * getInstance(){
-        if (!instance){
-            instance = new DatabaseConnection();
-        }
-
-        return instance;
-    }
+    // getters & setters
+    std::string getDbFilename() const { return dbFilename; }
+    void setDbFilename(std::string newDbFilename) { dbFilename = newDbFilename; }
+    // singleton utility func
+    static DatabaseConnection *getInstance();
+    // database access functions
+    void createDB() const;
 };
