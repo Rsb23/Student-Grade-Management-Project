@@ -3,17 +3,17 @@
 
 #include <iostream>
 #include <string>
-#include <include/sqlite3.h>
+#include <limits> // for str input validation
 
 class Person
 {
 protected:
-    std::string ID{""};
+    int ID{0};
     std::string firstName{""};
     std::string lastName{""};
 
 public:
-    Person();  // constructor, calls prompts
+    Person();  // constructor
     ~Person(); // deconstuctor, saves data
 
     // for new class objects, get new data via CLI prompt
@@ -21,14 +21,14 @@ public:
     void promptFirstName();
     void promptLastName();
 
-    std::string getID();
-    void setID(std::string);
+    int getID();
+    void setID(int newID);
 
     std::string getFirstName();
-    void setFirstName(std::string);
+    void setFirstName(std::string newFirstName);
 
     std::string getLastName();
-    void setLastName();
+    void setLastName(std::string newLastName);
 
     std::string getFullName();
 
