@@ -16,6 +16,6 @@ public:
     void setDbFilename(std::string newDbFilename) { dbFilename = newDbFilename; }
     // singleton utility func
     static DatabaseConnection *getInstance();
-    // database access functions
+    // database general access functions
     void createDB() const;
 };

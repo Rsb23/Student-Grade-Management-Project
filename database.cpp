@@ -23,22 +23,46 @@ DatabaseConnection *DatabaseConnection::getInstance()
         instance = new DatabaseConnection("test.db");
     }
 
+    instance->createDB();
+
     return instance;
 }
 void DatabaseConnection::createDB() const
 {
-    sqlite3_stmt *stmt;
+    sqlite3_stmt *createDBStmt;
+    sqlite3_stmt *createStudentsTableStmt;
+    sqlite3_stmt *createFacultyTableStmt;
+    sqlite3_stmt *createClassesTableStmt;
 
-    sqlite3_prepare_v2(db, "CREATE DATABASE test_db", -1, &stmt, NULL);
-    sqlite3_step(stmt);
+    sqlite3_prepare_v2(db, "CREATE DATABASE db", -1, &createDBStmt, NULL);
+    sqlite3_prepare_v2(db, "CREATE TABLE students(id INTEGER PRIMARY KEY AUTOINCREMENT,\
+                            first_name TEXT NOT NULL,\
+                            last_name TEXT NOT NULL,\
+                            grades TEXT,\
+                            classes_taken TEXT);",
+                       -1, &createStudentsTableStmt, NULL);
+    sqlite3_prepare_v2(db, "CREATE TABLE faculty(id INTEGER PRIMARY KEY AUTOINCREMENT,\
+                            first_name TEXT NOT NULL,\
+                            last_name TEXT NOT NULL,\
+                            classes_taught TEXT);",
+                       -1, &createFacultyTableStmt, NULL);
+    sqlite3_prepare_v2(db, "CREATE TABLE classes(id INTEGER PRIMARY KEY AUTOINCREMENT,\
+                            faculty_id INTEGER NOT NULL,\
+                            subject TEXT NOT NULL,\
+                            FOREIGN KEY(faculty_id) REFERENCES faculty(id));",
+                       -1, &createClassesTableStmt, NULL);
 
-    sqlite3_prepare_v2(db, "CREATE TABLE people (id INTEGER PRIMARY KEY AUTOINCREMENT,\nfirst_name TEXT NOT NULL,\nlast_name TEXT NOT NULL\n);", -1, &stmt, NULL);
-    sqlite3_step(stmt);
-
-    for (int i{0}; i < 5; i++)
+    // execute prepared SQL statements, check for errors
+    try
     {
-        sqlite3_prepare_v2(db, "INSERT INTO people (first_name, last_name)\nVALUES('Stefan', 'Barbu')", -1, &stmt, NULL);
-        sqlite3_step(stmt);
+        sqlite3_step(createDBStmt); // this must be run before the others
+        sqlite3_step(createStudentsTableStmt);
+        sqlite3_step(createFacultyTableStmt);
+        sqlite3_step(createClassesTableStmt);
+    }
+    catch (const std::exception &exception)
+    {
+        std::cerr << "An error occurred!\n" << exception.what() << "n";
     }
 }
 
@@ -47,8 +71,6 @@ DatabaseConnection *DatabaseConnection::instance = nullptr;
 int main()
 {
     DatabaseConnection *dbConn = DatabaseConnection::getInstance();
-
-    dbConn->createDB();
 
     return 0;
 }
