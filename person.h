@@ -3,37 +3,40 @@
 
 #include <iostream>
 #include <string>
-#include <include/sqlite3.h>
+#include "./include/sqlite3.h"
 
-class Person
+class PersonDAO
 {
 protected:
-    std::string ID{""};
+    int ID{0};
     std::string firstName{""};
     std::string lastName{""};
+    sqlite3 *db;
 
 public:
-    Person();  // constructor, calls prompts
-    ~Person(); // deconstuctor, saves data
+    PersonDAO(sqlite3 *db); // constructor, calls prompts
+    ~PersonDAO();           // deconstuctor, saves data
 
-    // for new class objects, get new data via CLI prompt
+    // new class instances -> get data via CLI prompts
+    virtual void promptAll();
+
     void promptID();
     void promptFirstName();
     void promptLastName();
 
-    std::string getID();
-    void setID(std::string);
+    int getID() const { return ID; };
+    void setID(int ID) { this -> ID = ID; };
 
-    std::string getFirstName();
-    void setFirstName(std::string);
+    std::string getFirstName() const { return firstName; };
+    void setFirstName(std::string firstName) { this -> firstName = firstName; };
 
-    std::string getLastName();
-    void setLastName();
+    std::string getLastName() const { return lastName; };
+    void setLastName(std::string lastName) { this->lastName = lastName; };
 
-    std::string getFullName();
+    std::string getFullName() const { return (firstName + " " + lastName); };
 
-    int saveData(std::string);
-    void readData(std::string);
+    virtual void saveData();
+    virtual void loadData(int ID);
 };
 
 #endif
