@@ -14,7 +14,7 @@ private:
 
 public:
     CourseDAO(sqlite3 *db);
-    // ~CourseDAO();
+    ~CourseDAO();
 
     std::string getSubject() const { return subject; };
     void setSubject(std::string subject) { this->subject = subject; };

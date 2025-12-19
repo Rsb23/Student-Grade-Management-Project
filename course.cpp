@@ -5,7 +5,9 @@ CourseDAO::CourseDAO(sqlite3 *db)
     this->db = db;
 }
 
-// CourseDAO::~CourseDAO(){}
+CourseDAO::~CourseDAO(){
+    saveData();
+}
 
 void CourseDAO::saveData()
 {
