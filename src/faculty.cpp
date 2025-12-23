@@ -57,22 +57,40 @@ void FacultyDAO::removeClassTaught(int classID)
         }
     }
 }
-std::string FacultyDAO::convertClassesTaughtToCSV()
+std::string FacultyDAO::serialize(std::vector<int> inputVector)
 {
-    // serialization func, converts vector<int< obj to str with CRN separated by commas (CSV)
+    // serialization func, converts vector<int> obj to str with CRN separated by commas (CSV)
     std::string returnStr{""};
 
-    for (int i{0}; i < classesTaught.size(); i++)
+    for (int i{0}; i < inputVector.size(); i++)
     {
-        returnStr += classesTaught[i];
+        returnStr += inputVector[i];
 
-        if (i != classesTaught.size() - 1)
+        if (i != inputVector.size() - 1)
         {
             returnStr += ",";
         }
     }
 
     return returnStr;
+}
+std::vector<int> FacultyDAO::deserialize(std::string str)
+{
+    std::vector<int> returnVector;
+    std::string iterableStr{""};
+
+    for (char ch : str)
+    {
+        if (ch != ',')
+        {
+            iterableStr += ch;
+        }
+        else
+        {
+            returnVector.push_back(static_cast<int>(iterableStr));
+            iterableStr = "";
+        }
+    }
 }
 void FacultyDAO::saveData()
 {
@@ -85,7 +103,7 @@ void FacultyDAO::saveData()
         sqlite3_bind_int(saveFacultyData, 1, ID);
         sqlite3_bind_text(saveFacultyData, 2, firstName.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(saveFacultyData, 3, lastName.c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(saveFacultyData, 4, convertClassesTaughtToCSV().c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(saveFacultyData, 4, serialize(classesTaught).c_str(), -1, SQLITE_TRANSIENT);
     }
     else
     {
@@ -93,7 +111,7 @@ void FacultyDAO::saveData()
 
         sqlite3_bind_text(saveFacultyData, 1, firstName.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(saveFacultyData, 2, lastName.c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(saveFacultyData, 3, convertClassesTaughtToCSV().c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(saveFacultyData, 3, serialize(classesTaught).c_str(), -1, SQLITE_TRANSIENT);
     }
 
     try
@@ -110,15 +128,16 @@ void FacultyDAO::loadData(int ID)
 {
     sqlite3_stmt *loadFacultyData;
 
-    sqlite3_prepare_v2(db, "SELECT subject FROM Courses WHERE id = ?1;", -1, &loadCourseStmt, NULL);
-    sqlite3_bind_int(loadCourseStmt, 1, classCRN);
+    sqlite3_prepare_v2(db, "SELECT first_name, last_name, courses_taught FROM Faculty WHERE faculty_id = ?1;", -1, &loadFacultyData, NULL);
+    sqlite3_bind_int(loadFacultyData, 1, ID);
 
     try
     {
-        while (sqlite3_step(loadCourseStmt) == SQLITE_ROW)
+        while (sqlite3_step(loadFacultyData) == SQLITE_ROW)
         {
-            professorID = sqlite3_column_int(loadCourseStmt, 0);
-            subject = std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadCourseStmt, 0)));
+            firstName = std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadFacultyData, 0)));
+            lastName = std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadFacultyData, 0)));
+            classesTaught = deserialize(std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadFacultyData, 0))));
         }
     }
     catch (const std::exception &exception)
