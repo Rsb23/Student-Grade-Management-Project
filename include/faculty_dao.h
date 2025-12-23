@@ -1,11 +1,11 @@
-#ifndef FACULTY_H
-#define FACULTY_H
+#ifndef FACULTY_DAO_H
+#define FACULTY_DAO_H
 
-#include "person.h"
 #include <vector>
 #include <string>
 #include <iostream>
 #include "./include/sqlite3.h"
+#include "./include/person_dao.h"
 
 class FacultyDAO : public PersonDAO
 {

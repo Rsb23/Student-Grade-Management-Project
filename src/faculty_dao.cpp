@@ -1,4 +1,4 @@
-#include "faculty.h"
+#include "./include/faculty_dao.h"
 
 FacultyDAO::FacultyDAO(sqlite3 *db, bool newPerson = false, int ID = 0)
 {
@@ -100,9 +100,9 @@ void FacultyDAO::loadData(int ID)
     {
         while (sqlite3_step(loadFacultyData) == SQLITE_ROW)
         {
-            firstName = std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadFacultyData, 0)));
-            lastName = std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadFacultyData, 0)));
-            classesTaught = deserialize(std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadFacultyData, 0))));
+            firstName = std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadFacultyData, 1)));
+            lastName = std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadFacultyData, 2)));
+            classesTaught = deserialize(std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadFacultyData, 3))));
         }
     }
     catch (const std::exception &exception)

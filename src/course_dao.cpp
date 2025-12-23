@@ -1,4 +1,4 @@
-#include "course.h"
+#include "./include/course_dao.h"
 
 CourseDAO::CourseDAO(sqlite3 *db, bool newCourse = false, int courseCRN = 0)
 {
@@ -63,8 +63,8 @@ void CourseDAO::loadData(int courseCRN)
     {
         while (sqlite3_step(loadCourseStmt) == SQLITE_ROW)
         {
-            professorID = sqlite3_column_int(loadCourseStmt, 0);
-            subject = std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadCourseStmt, 0)));
+            professorID = sqlite3_column_int(loadCourseStmt, 1);
+            subject = std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadCourseStmt, 2)));
         }
     }
     catch (const std::exception &exception)

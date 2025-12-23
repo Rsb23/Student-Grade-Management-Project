@@ -1,4 +1,4 @@
-#include "database.h"
+#include "./include/db_conn.h"
 
 DatabaseConnection::DatabaseConnection(std::string dbFilename)
 {
@@ -46,10 +46,10 @@ void DatabaseConnection::createDB() const
                             last_name TEXT NOT NULL,\
                             classes_taught TEXT);",
                        -1, &createFacultyTableStmt, NULL);
-    sqlite3_prepare_v2(db, "CREATE TABLE Courses(course_id INTEGER PRIMARY KEY AUTOINCREMENT,\
+    sqlite3_prepare_v2(db, "CREATE TABLE Courses(course_crn INTEGER PRIMARY KEY AUTOINCREMENT,\
                             subject TEXT NOT NULL,\
-                            taught_by_id INTEGER NOT NULL,\
-                            FOREIGN KEY(taught_by_id) REFERENCES Faculty(faculty_id));",
+                            professor_id INTEGER NOT NULL,\
+                            FOREIGN KEY(professor_id) REFERENCES Faculty(faculty_id));",
                        -1, &createCoursesTableStmt, NULL);
 
     // execute prepared SQL statements, check for errors
@@ -62,6 +62,7 @@ void DatabaseConnection::createDB() const
     }
     catch (const std::exception &exception)
     {
-        std::cerr << "An error occurred!\n" << exception.what() << "n";
+        std::cerr << "An error occurred!\n"
+                  << exception.what() << "n";
     }
 }

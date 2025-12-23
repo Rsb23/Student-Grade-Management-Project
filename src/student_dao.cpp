@@ -1,18 +1,28 @@
-#include "student.h"
+#include "student_dao.h"
 
-StudentDAO::StudentDAO(sqlite3 *db)
+StudentDAO::StudentDAO(sqlite3 *db, bool newPerson = false, int ID = 0)
 {
+    this->newPerson = newPerson;
     this->db = db;
-    promptAll();
+
+    if (newPerson)
+    {
+        promptAll();
+        saveData();
+    }
+    else
+    {
+        loadData(ID);
+    }
 }
 
 StudentDAO::~StudentDAO()
 {
+    saveData();
 }
 
 void StudentDAO::promptAll()
 {
-    promptID();
     promptFirstName();
     promptLastName();
     promptGrades();
@@ -44,7 +54,7 @@ void StudentDAO::promptClassesTaken()
 {
     while (true)
     {
-        std::cout << "Please enter class_ID: ";
+        std::cout << "Enter Course CRN: ";
 
         int classID{0};
         std::cin >> classID;
@@ -52,7 +62,7 @@ void StudentDAO::promptClassesTaken()
         classesTaken.push_back(classID);
 
         char res{'n'};
-        std::cout << "Would You Like To Add Another? (y/n): ";
+        std::cout << "Add Another? (y/n): ";
         std::cin >> res;
 
         if (res == 'n')
@@ -113,39 +123,6 @@ float StudentDAO::getMaxGrade() const
     return largest;
 }
 
-std::string StudentDAO::createStringCommas(std::vector<float> list)
-{
-    std::string returnStr{""};
-
-    for (int i{0}; i < list.size(); i++)
-    {
-        returnStr += std::to_string(list[i]);
-
-        if (i != list.size() - 1)
-        {
-            returnStr += ",";
-        }
-    }
-
-    return returnStr;
-}
-std::string StudentDAO::createStringCommas(std::vector<int> list)
-{
-    std::string returnStr{""};
-
-    for (int i{0}; i < list.size(); i++)
-    {
-        returnStr += std::to_string(list[i]);
-
-        if (i != list.size() - 1)
-        {
-            returnStr += ",";
-        }
-    }
-
-    return returnStr;
-}
-
 void StudentDAO::saveData()
 {
     sqlite3_stmt *saveStudentStmt;
@@ -154,8 +131,8 @@ void StudentDAO::saveData()
 
     sqlite3_bind_text(saveStudentStmt, 1, firstName.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(saveStudentStmt, 2, lastName.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(saveStudentStmt, 3, createStringCommas(grades).c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(saveStudentStmt, 4, createStringCommas(classesTaken).c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(saveStudentStmt, 3, serialize(grades).c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(saveStudentStmt, 4, serialize(classesTaken).c_str(), -1, SQLITE_TRANSIENT);
 
     try
     {
@@ -180,7 +157,7 @@ void StudentDAO::loadData(int ID)
     {
         firstName = std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadStudentStmt, 1)));
         lastName = std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadStudentStmt, 2)));
-        grades = std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadStudentStmt, 3)));
-        classesTaken = std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadStudentStmt, 4)));
+        grades = deserialize(std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadStudentStmt, 3))));
+        classesTaken = deserialize(std::string(reinterpret_cast<const char *>(sqlite3_column_text(loadStudentStmt, 4))));
     }
 }

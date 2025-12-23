@@ -1,5 +1,5 @@
-#ifndef COURSE_H
-#define COURSE_H
+#ifndef COURSE_DAO_H
+#define COURSE_DAO_H
 
 #include <iostream>
 #include <string>

@@ -1,5 +1,5 @@
-#ifndef PERSON_H
-#define PERSON_H
+#ifndef PERSON_DAO_H
+#define PERSON_DAO_H
 
 #include <iostream>
 #include <string>
