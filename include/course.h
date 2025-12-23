@@ -16,7 +16,7 @@ private:
 
 public:
     // constructor, deconstructor
-    CourseDAO(sqlite3 *db, bool newCourse = false, int classCRN);
+    CourseDAO(sqlite3 *db, bool newCourse = false, int classCRN = 0);
     ~CourseDAO();
 
     // prompts
