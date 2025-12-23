@@ -1,26 +1,34 @@
 #ifndef FACULTY_H
 #define FACULTY_H
 
+#include "person.h"
 #include <vector>
+#include <string>
 
-class Faculty : public Person
+class FacultyDAO : public PersonDAO
 {
 private:
     std::vector<int> classesTaught{};
 
 public:
-    Faculty();  // constructor, calls prompts
-    ~Faculty(); // deconstuctor, saves data
+    FacultyDAO();  // constructor, calls prompts
+    ~FacultyDAO(); // deconstuctor, saves data
 
-    // for new class objects, get new data via CLI prompt
+    // polymorphism b/c we have new variables and therefore prompts
+    void promptAll() override;
+
+    // new class instances -> get data via CLI prompts
     void promptClassesTaught();
 
-    std::vector<int> getClassesTaught();
-    void setClassesTaught(std::vector<int>);
+    std::vector<int> getClassesTaught() const;
+    void clearClassesTaught();
+    void addClassTaught();
+    void removeClassTaught(int classID);
+    int getClassesTaughtCount() const;
 
     // need polymorphism b/c Faculty has more information to save than Person
-    int saveData(std::string);
-    void readData(std::string);
+    void saveData(std::string) override;
+    void loadData(std::string) override;
 };
 
 #endif

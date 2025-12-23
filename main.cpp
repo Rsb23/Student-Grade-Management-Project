@@ -1,23 +1,17 @@
-#include "person.h"
-#include "student.h"
-#include "faculty.h"
+#include "database.h"
+#include "course.h"
+#include "./include/sqlite3.h"
 
-// forward declarations for main
-float calcClassAvg();
+DatabaseConnection *DatabaseConnection::instance = nullptr;
 
-int searchByID(int ID);
-int searchByName(std::string name);
-
-void displayStudentStats(std::string name);
-void displayStudentStats(int ID);
-
-void promptOptions();
-int addNewStudent();
-int searchForStudent(); // might be better to just use searchByID and searchByName functions
-int displayClassStats();
-
-int main(int argc, char const *argv[])
+int main()
 {
-    /* code */
+    DatabaseConnection *dbConn = DatabaseConnection::getInstance();
+
+    CourseDAO courseDAO(dbConn->getDB());
+    courseDAO.setProfessorID(34034);
+    courseDAO.setSubject("CSC1100");
+    courseDAO.saveData();
+
     return 0;
 }
