@@ -8,8 +8,8 @@
 class PersonDAO
 {
 protected:
-    int ID{0};
     bool newPerson{false};
+    int ID{0};
     std::string firstName{""};
     std::string lastName{""};
     sqlite3 *db;
