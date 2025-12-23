@@ -56,7 +56,7 @@ void CourseDAO::loadData(int classCRN)
 {
     sqlite3_stmt *loadCourseStmt;
 
-    sqlite3_prepare_v2(db, "SELECT subject FROM Courses WHERE id = ?1;", -1, &loadCourseStmt, NULL);
+    sqlite3_prepare_v2(db, "SELECT professor_id, subject FROM Courses WHERE id = ?1;", -1, &loadCourseStmt, NULL);
     sqlite3_bind_int(loadCourseStmt, 1, classCRN);
 
     try
