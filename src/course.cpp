@@ -2,6 +2,7 @@
 
 CourseDAO::CourseDAO(sqlite3 *db, bool newCourse = false, int classCRN)
 {
+    this->newCourse = newCourse;
     this->db = db;
 
     if (newCourse)
@@ -24,10 +25,21 @@ void CourseDAO::saveData()
 {
     sqlite3_stmt *saveCourseStmt;
 
-    sqlite3_prepare_v2(db, "INSERT INTO Courses VALUES(NULL, ?1, ?2);", -1, &saveCourseStmt, NULL);
+    if (!newCourse)
+    {
+        sqlite3_prepare_v2(db, "UPDATE Courses VALUES(?1, ?2, ?3) WHERE id = ?1;", -1, &saveCourseStmt, NULL);
 
-    sqlite3_bind_int(saveCourseStmt, 1, professorID);
-    sqlite3_bind_text(saveCourseStmt, 2, subject.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(saveCourseStmt, 1, classCRN);
+        sqlite3_bind_int(saveCourseStmt, 2, professorID);
+        sqlite3_bind_text(saveCourseStmt, 3, subject.c_str(), -1, SQLITE_TRANSIENT);
+    }
+    else
+    {
+        sqlite3_prepare_v2(db, "INSERT INTO Courses VALUES(NULL, ?1, ?2);", -1, &saveCourseStmt, NULL);
+
+        sqlite3_bind_int(saveCourseStmt, 1, professorID);
+        sqlite3_bind_text(saveCourseStmt, 2, subject.c_str(), -1, SQLITE_TRANSIENT);
+    }
 
     try
     {

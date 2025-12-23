@@ -8,7 +8,8 @@
 class CourseDAO
 {
 private:
-    int classCRN{0}; // this is the primary key, auto-incremented, only here when loading existing data
+    bool newCourse{false}; // used for tracking how constructor was used, if true, means prompts were called and its new data, if false, data is representing a row in the database
+    int classCRN{0};       // this is the primary key, auto-incremented, only here when loading existing data
     std::string subject{""};
     int professorID{0};
     sqlite3 *db;
