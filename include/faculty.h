@@ -28,10 +28,6 @@ public:
     void removeClassTaught(int classID);
     int getClassesTaughtCount() const { return classesTaught.size(); };
 
-    // helper function(s)
-    std::string serialize(std::vector<int> inputVector);
-    std::vector<int> deserialize(std::string str);
-
     // override b/c Faculty has more information to save than Person
     // database access
     void saveData() override;
