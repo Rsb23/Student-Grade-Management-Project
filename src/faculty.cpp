@@ -57,41 +57,6 @@ void FacultyDAO::removeClassTaught(int classID)
         }
     }
 }
-std::string FacultyDAO::serialize(std::vector<int> inputVector)
-{
-    // serialization func, converts vector<int> obj to str with CRN separated by commas (CSV)
-    std::string returnStr{""};
-
-    for (int i{0}; i < inputVector.size(); i++)
-    {
-        returnStr += inputVector[i];
-
-        if (i != inputVector.size() - 1)
-        {
-            returnStr += ",";
-        }
-    }
-
-    return returnStr;
-}
-std::vector<int> FacultyDAO::deserialize(std::string str)
-{
-    std::vector<int> returnVector;
-    std::string iterableStr{""};
-
-    for (char ch : str)
-    {
-        if (ch != ',')
-        {
-            iterableStr += ch;
-        }
-        else
-        {
-            returnVector.push_back(static_cast<int>(iterableStr));
-            iterableStr = "";
-        }
-    }
-}
 void FacultyDAO::saveData()
 {
     sqlite3_stmt *saveFacultyData;

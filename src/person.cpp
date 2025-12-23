@@ -30,7 +30,58 @@ void PersonDAO::promptLastName()
 
     std::cin >> lastName;
 }
+std::string PersonDAO::serialize(std::vector<int> inputVector)
+{
+    // serialization func, converts vector<int> obj to str with CRN separated by commas (CSV)
+    std::string returnStr{""};
 
+    for (int i{0}; i < inputVector.size(); i++)
+    {
+        returnStr += inputVector[i];
+
+        if (i != inputVector.size() - 1)
+        {
+            returnStr += ",";
+        }
+    }
+
+    return returnStr;
+}
+std::string PersonDAO::serialize(std::vector<float> inputVector)
+{
+    // serialization func, converts vector<int> obj to str with CRN separated by commas (CSV)
+    std::string returnStr{""};
+
+    for (int i{0}; i < inputVector.size(); i++)
+    {
+        returnStr += inputVector[i];
+
+        if (i != inputVector.size() - 1)
+        {
+            returnStr += ",";
+        }
+    }
+
+    return returnStr;
+}
+std::vector<float> PersonDAO::deserialize(std::string str)
+{
+    std::vector<int> returnVector;
+    std::string iterableStr{""};
+
+    for (char ch : str)
+    {
+        if (ch != ',')
+        {
+            iterableStr += ch;
+        }
+        else
+        {
+            returnVector.push_back(static_cast<float>(iterableStr));
+            iterableStr = "";
+        }
+    }
+}
 void PersonDAO::saveData()
 {
     // function not used since we don't have a table for the person datatype

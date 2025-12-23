@@ -14,7 +14,7 @@ private:
 
 public:
     // constructor, deconstructor
-    FacultyDAO(sqlite3 *db);
+    FacultyDAO(sqlite3 *db, bool newPerson = false, int ID = 0);
     ~FacultyDAO();
 
     // prompts
@@ -29,7 +29,8 @@ public:
     int getClassesTaughtCount() const { return classesTaught.size(); };
 
     // helper function(s)
-    std::string convertClassesTaughtToCSV();
+    std::string serialize(std::vector<int> inputVector);
+    std::vector<int> deserialize(std::string str);
 
     // override b/c Faculty has more information to save than Person
     // database access

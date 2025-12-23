@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include "./include/sqlite3.h"
 
 class PersonDAO
@@ -35,6 +36,11 @@ public:
     void setLastName(std::string lastName) { this->lastName = lastName; };
 
     std::string getFullName() const { return (firstName + " " + lastName); };
+
+    // helper function(s) + overload(s)
+    std::string serialize(std::vector<int> inputVector);
+    std::string serialize(std::vector<float> inputVector);
+    std::vector<float> deserialize(std::string str);
 
     // database access (not for this base class)
     virtual void saveData();
