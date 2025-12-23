@@ -9,14 +9,14 @@ class CourseDAO
 {
 private:
     bool newCourse{false}; // used for tracking how constructor was used, if true, means prompts were called and its new data, if false, data is representing a row in the database
-    int classCRN{0};       // this is the primary key, auto-incremented, only here when loading existing data
+    int courseCRN{0};      // this is the primary key, auto-incremented, only here when loading existing data
     std::string subject{""};
     int professorID{0};
     sqlite3 *db;
 
 public:
     // constructor, deconstructor
-    CourseDAO(sqlite3 *db, bool newCourse = false, int classCRN = 0);
+    CourseDAO(sqlite3 *db, bool newCourse = false, int courseCRN = 0);
     ~CourseDAO();
 
     // prompts
@@ -25,8 +25,8 @@ public:
     void promptProfessorID();
 
     // getters & setters
-    int getClassCRN() const { return classCRN; };
-    void setClassCRN(int classCRN) { this->classCRN = classCRN; };
+    int getClassCRN() const { return courseCRN; };
+    void setClassCRN(int courseCRN) { this->courseCRN = courseCRN; };
 
     std::string getSubject() const { return subject; };
     void setSubject(std::string subject) { this->subject = subject; };
@@ -36,7 +36,7 @@ public:
 
     // database access
     void saveData();
-    void loadData(int classCRN);
+    void loadData(int courseCRN);
 };
 
 #endif

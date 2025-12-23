@@ -1,6 +1,6 @@
 #include "course.h"
 
-CourseDAO::CourseDAO(sqlite3 *db, bool newCourse = false, int classCRN = 0)
+CourseDAO::CourseDAO(sqlite3 *db, bool newCourse = false, int courseCRN = 0)
 {
     this->newCourse = newCourse;
     this->db = db;
@@ -12,7 +12,7 @@ CourseDAO::CourseDAO(sqlite3 *db, bool newCourse = false, int classCRN = 0)
     }
     else
     {
-        loadData(classCRN);
+        loadData(courseCRN);
     }
 }
 
@@ -29,16 +29,16 @@ void CourseDAO::saveData()
     {
         sqlite3_prepare_v2(db, "UPDATE Courses VALUES(?1, ?2, ?3) WHERE id = ?1;", -1, &saveCourseStmt, NULL);
 
-        sqlite3_bind_int(saveCourseStmt, 1, classCRN);
-        sqlite3_bind_int(saveCourseStmt, 2, professorID);
-        sqlite3_bind_text(saveCourseStmt, 3, subject.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(saveCourseStmt, 1, courseCRN);
+        sqlite3_bind_text(saveCourseStmt, 2, subject.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(saveCourseStmt, 3, professorID);
     }
     else
     {
         sqlite3_prepare_v2(db, "INSERT INTO Courses VALUES(NULL, ?1, ?2);", -1, &saveCourseStmt, NULL);
 
-        sqlite3_bind_int(saveCourseStmt, 1, professorID);
-        sqlite3_bind_text(saveCourseStmt, 2, subject.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(saveCourseStmt, 1, subject.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(saveCourseStmt, 2, professorID);
     }
 
     try
@@ -52,12 +52,12 @@ void CourseDAO::saveData()
     }
 }
 
-void CourseDAO::loadData(int classCRN)
+void CourseDAO::loadData(int courseCRN)
 {
     sqlite3_stmt *loadCourseStmt;
 
     sqlite3_prepare_v2(db, "SELECT professor_id, subject FROM Courses WHERE id = ?1;", -1, &loadCourseStmt, NULL);
-    sqlite3_bind_int(loadCourseStmt, 1, classCRN);
+    sqlite3_bind_int(loadCourseStmt, 1, courseCRN);
 
     try
     {
