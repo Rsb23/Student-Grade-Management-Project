@@ -1,6 +1,6 @@
-#include "student_dao.h"
+#include "../../include/dao/student_dao.h"
 
-StudentDAO::StudentDAO(sqlite3 *db, bool newPerson = false, int ID = 0)
+StudentDAO::StudentDAO(sqlite3 *db, bool newPerson, int ID)
 {
     this->newPerson = newPerson;
     this->db = db;

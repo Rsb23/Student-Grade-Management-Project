@@ -2,14 +2,14 @@
 #define STUDENT_DAO_H
 
 #include <vector>
-#include "./include/person_dao.h"
-#include "./include/sqlite3.h"
+#include "person_dao.h"
+#include "../include/sqlite3.h"
 
 class StudentDAO : public PersonDAO
 {
 private:
     std::vector<float> grades;
-    std::vector<int> classesTaken;
+    std::vector<float> classesTaken;
     sqlite3 *db;
 
 public:
@@ -33,7 +33,7 @@ public:
     float getMinGrade() const;
     float getMaxGrade() const;
 
-    std::vector<int> getClassesTaken() const { return classesTaken; };
+    std::vector<float> getClassesTaken() const { return classesTaken; };
     void clearClassesTaken() { classesTaken.clear(); };
     void addClassTaken(int classID) { classesTaken.push_back(classID); };
     void removeClassTaken(int classID);

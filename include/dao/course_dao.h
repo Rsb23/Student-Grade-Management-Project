@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include "./include/sqlite3.h"
+#include "../include/sqlite3.h"
 
 class CourseDAO
 {

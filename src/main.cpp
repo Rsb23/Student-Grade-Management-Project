@@ -1,8 +1,9 @@
-#include "./include/db_conn.h"
-#include "./include/course_dao.h"
-#include "./include/faculty_dao.h"
-#include "./include/student_dao.h"
-#include "./include/sqlite3.h"
+#include "../../include/dao/person_dao.h"
+#include "../../include/dao/course_dao.h"
+#include "../../include/dao/faculty_dao.h"
+#include "../../include/dao/student_dao.h"
+#include "../include/db_conn.h"
+#include "../../include/sqlite3.h"
 
 DatabaseConnection *DatabaseConnection::instance = nullptr;
 

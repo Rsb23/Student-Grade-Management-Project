@@ -1,6 +1,6 @@
-#include "./include/course_dao.h"
+#include "../../include/dao/course_dao.h"
 
-CourseDAO::CourseDAO(sqlite3 *db, bool newCourse = false, int courseCRN = 0)
+CourseDAO::CourseDAO(sqlite3 *db, bool newCourse, int courseCRN)
 {
     this->newCourse = newCourse;
     this->db = db;

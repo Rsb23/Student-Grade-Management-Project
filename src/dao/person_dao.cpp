@@ -1,6 +1,6 @@
-#include "./include/dao/person_dao.h"
+#include "../../include/dao/person_dao.h"
 
-PersonDAO::PersonDAO(bool newPerson = false, int ID = 0)
+PersonDAO::PersonDAO(bool newPerson, int ID)
 {
     if (newPerson)
     {
@@ -66,7 +66,7 @@ std::string PersonDAO::serialize(std::vector<float> inputVector)
 }
 std::vector<float> PersonDAO::deserialize(std::string str)
 {
-    std::vector<int> returnVector;
+    std::vector<float> returnVector;
     std::string iterableStr{""};
 
     for (char ch : str)
@@ -81,6 +81,8 @@ std::vector<float> PersonDAO::deserialize(std::string str)
             iterableStr = "";
         }
     }
+
+    return returnVector;
 }
 void PersonDAO::saveData()
 {

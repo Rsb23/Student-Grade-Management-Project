@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "./include/sqlite3.h"
+#include "../include/sqlite3.h"
 
 class PersonDAO
 {

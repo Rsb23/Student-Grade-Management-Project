@@ -1,6 +1,6 @@
-#include "./include/faculty_dao.h"
+#include "../../include/dao/faculty_dao.h"
 
-FacultyDAO::FacultyDAO(sqlite3 *db, bool newPerson = false, int ID = 0)
+FacultyDAO::FacultyDAO(sqlite3 *db, bool newPerson, int ID)
 {
     this->newPerson = newPerson;
     this->db = db;

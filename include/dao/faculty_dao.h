@@ -4,13 +4,13 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include "./include/sqlite3.h"
-#include "./include/person_dao.h"
+#include "../include/sqlite3.h"
+#include "person_dao.h"
 
 class FacultyDAO : public PersonDAO
 {
 private:
-    std::vector<int> classesTaught{};
+    std::vector<float> classesTaught{};
 
 public:
     // constructor, deconstructor
@@ -22,7 +22,7 @@ public:
     void promptClassesTaught();
 
     // getters & setters, helper getters & setters
-    std::vector<int> getClassesTaught() const { return classesTaught; };
+    std::vector<float> getClassesTaught() const { return classesTaught; };
     void clearClassesTaught() { classesTaught.erase(classesTaught.begin(), classesTaught.end()); };
     void addClassTaught(int classCRN) { classesTaught.push_back(classCRN); };
     void removeClassTaught(int classID);
