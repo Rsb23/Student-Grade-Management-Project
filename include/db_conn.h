@@ -1,6 +1,9 @@
-#include "include/sqlite3.h"
+#ifndef DATABASE_CONN_H
+#define DATABASE_CONN_H
+
 #include <iostream>
 #include <string>
+#include "./include/sqlite3.h"
 
 class DatabaseConnection
 {
@@ -13,9 +16,13 @@ private:
 public:
     // getters & setters
     std::string getDbFilename() const { return dbFilename; }
-    void setDbFilename(std::string newDbFilename) { dbFilename = newDbFilename; }
+    void setDbFilename(std::string newDbFilename) { dbFilename = newDbFilename; };
+
+    sqlite3 *getDB() const { return db; };
     // singleton utility func
     static DatabaseConnection *getInstance();
-    // database access functions
+    // database general access functions
     void createDB() const;
 };
+
+#endif
